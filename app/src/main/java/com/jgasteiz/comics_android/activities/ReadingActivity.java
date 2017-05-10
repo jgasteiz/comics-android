@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.models.Comic;
 import com.squareup.picasso.Callback;
@@ -19,6 +20,7 @@ public class ReadingActivity extends Activity {
 
     private ImageView mPageImageView;
     private PhotoViewAttacher mAttacher;
+    private ProgressBar mProgressBar;
     private Comic mComic;
 
     private Callback mPicassoCallback;
@@ -31,6 +33,9 @@ public class ReadingActivity extends Activity {
         // Get the comic from the intent.
         mComic = (Comic) getIntent().getSerializableExtra("comic");
 
+        // Initialize the progress bar.
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.GONE);
         // Initialize the main image view.
         mPageImageView = (ImageView) findViewById(R.id.active_page);
         // Attach a PhotoView attacher to it.
@@ -76,6 +81,8 @@ public class ReadingActivity extends Activity {
      * @param pageIndex Integer, index of the page to load.
      */
     private void loadPageWithIndex (int pageIndex) {
+        mPageImageView.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
         Picasso
             .with(this)
             .load(mComic.getPage(pageIndex))
@@ -118,6 +125,8 @@ public class ReadingActivity extends Activity {
         return new Callback() {
             @Override
             public void onSuccess() {
+                mProgressBar.setVisibility(View.GONE);
+                mPageImageView.setVisibility(View.VISIBLE);
                 mAttacher.update();
             }
 
