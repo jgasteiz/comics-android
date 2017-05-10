@@ -1,7 +1,7 @@
 package com.jgasteiz.comics_android.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,7 +11,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class ReadingActivity extends AppCompatActivity {
+public class ReadingActivity extends Activity {
 
     private final static String LOG_TAG = ReadingActivity.class.getSimpleName();
 
@@ -30,11 +30,6 @@ public class ReadingActivity extends AppCompatActivity {
 
         // Get the comic from the intent.
         mComic = (Comic) getIntent().getSerializableExtra("comic");
-
-        // Set title on the toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(mComic.getTitle());
-        }
 
         // Initialize the main image view.
         mPageImageView = (ImageView) findViewById(R.id.active_page);
