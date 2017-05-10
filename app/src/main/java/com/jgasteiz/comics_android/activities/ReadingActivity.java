@@ -43,6 +43,9 @@ public class ReadingActivity extends Activity {
 
         // Load the first page.
         loadPageWithIndex(mCurrentPageIndex);
+
+        // Start immersive mode for better reading.
+        setImmersiveMode();
     }
 
     /**
@@ -97,6 +100,8 @@ public class ReadingActivity extends Activity {
                     loadNextPage();
                 } else if (touchRightPosition < 15) {
                     loadPreviousPage();
+                } else {
+                    setImmersiveMode();
                 }
             }
         };
@@ -121,5 +126,15 @@ public class ReadingActivity extends Activity {
                 Log.e(LOG_TAG, "An error occurred");
             }
         };
+    }
+
+    private void setImmersiveMode () {
+        getWindow().getDecorView().setSystemUiVisibility(
+              View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+            | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 }
