@@ -33,9 +33,9 @@ public class ReadingActivity extends AppCompatActivity {
 
                 int touchRightPosition = (int) (100 * x / view.getWidth());
 
-                if (touchRightPosition > 60) {
+                if (touchRightPosition > 85) {
                     loadNextPage();
-                } else if (touchRightPosition < 40) {
+                } else if (touchRightPosition < 15) {
                     loadPreviousPage();
                 }
 
