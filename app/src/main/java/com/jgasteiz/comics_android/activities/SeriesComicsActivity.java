@@ -1,6 +1,5 @@
 package com.jgasteiz.comics_android.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.jgasteiz.comics_android.ComicsController;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.interfaces.OnComicsFetched;
@@ -46,8 +44,6 @@ public class SeriesComicsActivity extends AppCompatActivity {
     }
 
     private void populateComicList (final ArrayList<Comic> comicList) {
-        final Context context = this;
-
         ArrayList<String> comicTitles = new ArrayList<String>();
         for (Comic comic : comicList) {
             comicTitles.add(comic.getTitle());

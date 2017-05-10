@@ -2,18 +2,15 @@ package com.jgasteiz.comics_android.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import com.jgasteiz.comics_android.ComicsController;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.models.Comic;
 import com.squareup.picasso.Picasso;
 
 public class ReadingActivity extends AppCompatActivity {
 
-    private ComicsController mComicsController;
     private int mCurrentPageIndex = 0;
 
     private ImageView mPageImageView;

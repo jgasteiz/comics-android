@@ -13,7 +13,6 @@ import com.jgasteiz.comics_android.interfaces.OnSeriesFetched;
 import com.jgasteiz.comics_android.models.Series;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SeriesActivity extends AppCompatActivity {
 
