@@ -22,6 +22,9 @@
         <activity
             android:name=".activities.SeriesComicsActivity"
             android:parentActivityName=".activities.SeriesActivity"/>
+        <activity
+            android:name=".activities.ReadingActivity"
+            android:parentActivityName=".activities.SeriesComicsActivity"/>
     </application>
 
 </manifest>

@@ -63,9 +63,14 @@ public class SeriesComicsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: Read comic!
-                Toast.makeText(context, "Read comic", Toast.LENGTH_SHORT).show();
+                navigateToReadingView(comicList.get(position));
             }
         });
+    }
+
+    private void navigateToReadingView(Comic comic) {
+        Intent intent = new Intent(getApplication(), ReadingActivity.class);
+        intent.putExtra("comic", comic);
+        startActivity(intent);
     }
 }

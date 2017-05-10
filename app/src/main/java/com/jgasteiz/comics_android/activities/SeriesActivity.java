@@ -33,12 +33,6 @@ public class SeriesActivity extends AppCompatActivity {
         });
     }
 
-    private void navigateToSeriesView(Series series) {
-        Intent intent = new Intent(getApplication(), SeriesComicsActivity.class);
-        intent.putExtra("series", series);
-        startActivity(intent);
-    }
-
     private void populateSeriesList (final ArrayList<Series> seriesList) {
         ArrayList<String> seriesTitles = new ArrayList<String>();
         for (Series series : seriesList) {
@@ -58,5 +52,11 @@ public class SeriesActivity extends AppCompatActivity {
                 navigateToSeriesView(seriesList.get(position));
             }
         });
+    }
+
+    private void navigateToSeriesView(Series series) {
+        Intent intent = new Intent(getApplication(), SeriesComicsActivity.class);
+        intent.putExtra("series", series);
+        startActivity(intent);
     }
 }

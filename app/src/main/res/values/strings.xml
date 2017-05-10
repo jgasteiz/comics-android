@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Comics-android</string>
+    <string name="active_page">Active Page</string>
 </resources>
