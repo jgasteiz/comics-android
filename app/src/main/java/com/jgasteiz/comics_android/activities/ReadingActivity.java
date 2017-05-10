@@ -31,6 +31,11 @@ public class ReadingActivity extends AppCompatActivity {
         // Get the comic from the intent.
         mComic = (Comic) getIntent().getSerializableExtra("comic");
 
+        // Set title on the toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(mComic.getTitle());
+        }
+
         // Initialize the main image view.
         mPageImageView = (ImageView) findViewById(R.id.active_page);
         // Attach a PhotoView attacher to it.
