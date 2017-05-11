@@ -1,4 +1,4 @@
-package com.jgasteiz.comics_android.activities;
+package com.jgasteiz.comics_android.ComicList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.jgasteiz.comics_android.ComicsController;
 import com.jgasteiz.comics_android.R;
+import com.jgasteiz.comics_android.Reading.ReadingActivity;
 import com.jgasteiz.comics_android.interfaces.OnComicsFetched;
 import com.jgasteiz.comics_android.models.Comic;
 import com.jgasteiz.comics_android.models.Series;
 
 import java.util.ArrayList;
 
-public class SeriesComicsActivity extends AppCompatActivity {
+public class ComicListActivity extends AppCompatActivity {
 
     protected Series mSeries;
     private ComicsController mComicsController;

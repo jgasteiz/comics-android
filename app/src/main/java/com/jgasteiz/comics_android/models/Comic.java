@@ -16,10 +16,7 @@ public class Comic implements Serializable {
     private String title;
     private ArrayList<String> pages;
 
-    public Comic(int id, String title, ArrayList<Integer> comics) {
-        this.id = id;
-        this.title = title;
-    }
+    public Comic() {}
 
     public Comic(JSONObject jsonObject) {
         try {

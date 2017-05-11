@@ -1,4 +1,4 @@
-package com.jgasteiz.comics_android.activities;
+package com.jgasteiz.comics_android.SeriesList;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.jgasteiz.comics_android.ComicsController;
 import com.jgasteiz.comics_android.R;
+import com.jgasteiz.comics_android.ComicList.ComicListActivity;
 import com.jgasteiz.comics_android.interfaces.OnSeriesFetched;
 import com.jgasteiz.comics_android.models.Series;
 
 import java.util.ArrayList;
 
-public class SeriesActivity extends AppCompatActivity {
+public class SeriesListActivity extends AppCompatActivity {
 
     private ComicsController mComicsController;
 
@@ -37,11 +38,7 @@ public class SeriesActivity extends AppCompatActivity {
         for (Series series : seriesList) {
             seriesTitles.add(series.getTitle());
         }
-        ArrayAdapter<String> seriesListAdapter = new ArrayAdapter<String> (
-                this,
-                android.R.layout.simple_list_item_1,
-                seriesTitles
-        );
+        SeriesListAdapter seriesListAdapter = new SeriesListAdapter(this, seriesList);
         ListView listView = (ListView) findViewById(R.id.series_list);
         listView.setAdapter(seriesListAdapter);
 
@@ -54,7 +51,7 @@ public class SeriesActivity extends AppCompatActivity {
     }
 
     private void navigateToSeriesView(Series series) {
-        Intent intent = new Intent(getApplication(), SeriesComicsActivity.class);
+        Intent intent = new Intent(getApplication(), ComicListActivity.class);
         intent.putExtra("series", series);
         startActivity(intent);
     }

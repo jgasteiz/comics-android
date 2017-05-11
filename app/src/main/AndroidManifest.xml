@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.SeriesActivity"
+            android:name=".SeriesList.SeriesListActivity"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
         >
@@ -24,14 +24,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SeriesComicsActivity"
+            android:name=".ComicList.ComicListActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.SeriesActivity"
+            android:parentActivityName=".SeriesList.SeriesListActivity"
             android:configChanges="orientation|screenSize"
         />
         <activity
-            android:name=".activities.ReadingActivity"
-            android:parentActivityName=".activities.SeriesComicsActivity"
+            android:name=".Reading.ReadingActivity"
+            android:parentActivityName=".ComicList.ComicListActivity"
             android:configChanges="orientation|screenSize"
         />
     </application>

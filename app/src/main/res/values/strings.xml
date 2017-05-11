@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Comics-android</string>
     <string name="active_page">Active Page</string>
+    <string name="the_series_title">The Series Title</string>
+    <string name="the_series_author">The series author</string>
+    <string name="the_series_year">2003</string>
 </resources>

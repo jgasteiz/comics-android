@@ -1,4 +1,4 @@
-package com.jgasteiz.comics_android.activities;
+package com.jgasteiz.comics_android.Reading;
 
 import android.app.Activity;
 import android.os.Bundle;

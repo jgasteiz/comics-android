@@ -15,16 +15,17 @@ public class Series implements Serializable {
 
     private int id;
     private String title;
+    private String author;
+    private String year;
 
-    public Series(int id, String title, ArrayList<Integer> comics) {
-        this.id = id;
-        this.title = title;
-    }
+    public Series() {}
 
     public Series(JSONObject jsonObject) {
         try {
             this.id = (int) jsonObject.get("pk");
             this.title = (String) jsonObject.get("title");
+            this.author = (String) jsonObject.get("author");
+            this.year = (String) jsonObject.get("year");
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage());
         }
@@ -48,5 +49,21 @@ public class Series implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }
