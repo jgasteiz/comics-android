@@ -1,6 +1,10 @@
 package com.jgasteiz.comics_android.helpers;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,5 +30,11 @@ public class Utils {
             pageList.add(page);
         }
         return pageList;
+    }
+
+    public static boolean isNetworkAvailable (Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

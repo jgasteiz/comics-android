@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.jgasteiz.comics_android.helpers.ComicsController;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.ComicList.ComicListActivity;
+import com.jgasteiz.comics_android.helpers.Utils;
 import com.jgasteiz.comics_android.interfaces.OnSeriesFetched;
 import com.jgasteiz.comics_android.models.Series;
 
@@ -25,12 +27,17 @@ public class SeriesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_series);
 
         mComicsController = new ComicsController(this);
-        mComicsController.fetchSeries(new OnSeriesFetched() {
-            @Override
-            public void callback() {
-                populateSeriesList(mComicsController.getSeries());
-            }
-        });
+        if (Utils.isNetworkAvailable(this)) {
+            mComicsController.fetchSeries(new OnSeriesFetched() {
+                @Override
+                public void callback() {
+                    populateSeriesList(mComicsController.getSeries());
+                }
+            });
+        } else {
+            populateSeriesList(mComicsController.getSeries());
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void populateSeriesList (final ArrayList<Series> seriesList) {

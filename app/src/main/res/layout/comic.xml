@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
@@ -10,7 +10,17 @@
     <TextView
         android:text="@string/the_comic_title"
         android:id="@+id/comic_title"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_marginEnd="6dp"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:id="@+id/download"
+        android:text="@string/download_comic"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
 
 </LinearLayout>
