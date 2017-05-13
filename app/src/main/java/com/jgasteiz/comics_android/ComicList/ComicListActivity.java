@@ -49,13 +49,9 @@ public class ComicListActivity extends AppCompatActivity {
         for (Comic comic : comicList) {
             comicTitles.add(comic.getTitle());
         }
-        ArrayAdapter<String> seriesListAdapter = new ArrayAdapter<String> (
-                this,
-                android.R.layout.simple_list_item_1,
-                comicTitles
-        );
+        ComicListAdapter comicListAdapter = new ComicListAdapter(this, comicList);
         ListView listView = (ListView) findViewById(R.id.comic_list);
-        listView.setAdapter(seriesListAdapter);
+        listView.setAdapter(comicListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
