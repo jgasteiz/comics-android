@@ -1,6 +1,7 @@
 package com.jgasteiz.comics_android.models;
 
 import android.util.Log;
+import com.jgasteiz.comics_android.helpers.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,10 +16,18 @@ public class Comic implements Serializable {
     private int id;
     private String title;
     private ArrayList<String> pages;
+    private Series series;
 
-    public Comic() {}
+    public Comic(int id, String title, String pages, Series series) {
+        this.id = id;
+        this.title = title;
+        this.pages = Utils.convertStringToArray(pages);
+        this.series = series;
+    }
 
-    public Comic(JSONObject jsonObject) {
+    public Comic(Series series, JSONObject jsonObject) {
+        this.series = series;
+
         try {
             this.id = (int) jsonObject.get("pk");
             this.title = (String) jsonObject.get("title");
@@ -35,8 +44,12 @@ public class Comic implements Serializable {
         }
     }
 
-    public static String getLogTag() {
-        return LOG_TAG;
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
     }
 
     public int getId() {
@@ -65,5 +78,9 @@ public class Comic implements Serializable {
 
     public String getPage(int pageIndex) {
         return pages.get(pageIndex);
+    }
+
+    public String getSerializedPages() {
+        return Utils.convertArrayToString(getPages());
     }
 }

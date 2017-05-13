@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.jgasteiz.comics_android.ComicsController;
+import com.jgasteiz.comics_android.helpers.ComicsController;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.Reading.ReadingActivity;
 import com.jgasteiz.comics_android.interfaces.OnComicsFetched;
@@ -35,11 +35,11 @@ public class ComicListActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(mSeries.getTitle());
         }
 
-        mComicsController = new ComicsController();
-        mComicsController.getSeriesComics(mSeries, new OnComicsFetched() {
+        mComicsController = new ComicsController(this);
+        mComicsController.fetchSeriesComics(mSeries, new OnComicsFetched() {
             @Override
-            public void callback(ArrayList<Comic> comicList) {
-                populateComicList(comicList);
+            public void callback() {
+                populateComicList(mComicsController.getSeriesComics(mSeries));
             }
         });
     }

@@ -18,7 +18,12 @@ public class Series implements Serializable {
     private String author;
     private String year;
 
-    public Series() {}
+    public Series(int id, String title, String author, String year) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.year = year;
+    }
 
     public Series(JSONObject jsonObject) {
         try {

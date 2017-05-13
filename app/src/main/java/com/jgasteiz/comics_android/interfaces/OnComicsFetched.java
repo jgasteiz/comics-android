@@ -6,5 +6,5 @@ import com.jgasteiz.comics_android.models.Series;
 import java.util.ArrayList;
 
 public interface OnComicsFetched {
-    void callback(ArrayList<Comic> comicList);
+    void callback();
 }
