@@ -1,6 +1,7 @@
 package com.jgasteiz.comics_android.models;
 
 import android.util.Log;
+import com.jgasteiz.comics_android.helpers.Secret;
 import com.jgasteiz.comics_android.helpers.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +78,11 @@ public class Comic implements Serializable {
     }
 
     public String getPage(int pageIndex) {
-        return pages.get(pageIndex);
+        if (!Secret.MOCK_ENABLED) {
+            return pages.get(pageIndex);
+        } else {
+            return pages.get(pageIndex).replace("localhost", Secret.MOCK_SERVER_IP_ADDRESS);
+        }
     }
 
     public String getSerializedPages() {
