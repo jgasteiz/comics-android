@@ -34,6 +34,10 @@ public class ComicsController {
         mComicsDataSource = new ComicsDataSource(mContext);
     }
 
+    /**
+     * Fetch all the series from the API and store them in the DB.
+     * @param onSeriesFetched callback
+     */
     public void fetchSeries (final OnSeriesFetched onSeriesFetched) {
         final GetStringResponseAsyncTask task = new GetStringResponseAsyncTask(new OnResponseFetched() {
             @Override
@@ -61,6 +65,11 @@ public class ComicsController {
         }
     }
 
+    /**
+     * Fetch a given series' comics from the API and store them in the DB.
+     * @param series Series instance
+     * @param onComicsFetched callback
+     */
     public void fetchSeriesComics (final Series series, final OnComicsFetched onComicsFetched) {
         final GetStringResponseAsyncTask task = new GetStringResponseAsyncTask(new OnResponseFetched() {
             @Override
@@ -89,6 +98,10 @@ public class ComicsController {
         }
     }
 
+    /**
+     * Get all the series from the DB.
+     * @return array list of Series instances
+     */
     public ArrayList<Series> getSeries () {
         ArrayList<Series> seriesList = new ArrayList<>();
 
@@ -116,6 +129,11 @@ public class ComicsController {
         return seriesList;
     }
 
+    /**
+     * Get a given series' comics from the DB.
+     * @param series Series instance
+     * @return array list of Comic instances
+     */
     public ArrayList<Comic> getSeriesComics (Series series) {
         ArrayList<Comic> comicList = new ArrayList<>();
 
@@ -140,37 +158,5 @@ public class ComicsController {
         mComicsDataSource.close();
 
         return comicList;
-    }
-
-    private class GetStringResponseAsyncTask extends AsyncTask<String, Void, String> {
-
-        private OnResponseFetched mOnResponseFetched;
-
-        private OkHttpClient client = new OkHttpClient();
-
-        public GetStringResponseAsyncTask(OnResponseFetched onResponseFetched) {
-            mOnResponseFetched = onResponseFetched;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            Request.Builder builder = new Request.Builder();
-            builder.url(params[0]);
-            Request request = builder.build();
-            try {
-                Response response = client.newCall(request).execute();
-
-                return response.body().string();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            mOnResponseFetched.callback(response);
-        }
     }
 }
