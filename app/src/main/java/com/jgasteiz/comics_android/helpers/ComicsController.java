@@ -24,6 +24,7 @@ public class ComicsController {
 
     private static final String LOG_TAG = ComicsController.class.getSimpleName();
     private static final String SERIES_URL = "http://comics.jgasteiz.com/api/series/";
+    private static final String MOCK_SERIES_URL = String.format("http://%s:8000/api/series/", Secret.MOCK_SERVER_IP_ADDRESS);
 
     private Context mContext;
     private ComicsDataSource mComicsDataSource;
@@ -38,10 +39,10 @@ public class ComicsController {
             @Override
             public void callback(String response) {
                 Log.d(LOG_TAG, response);
-                mComicsDataSource.open();
-                mComicsDataSource.deleteAllSeries();
                 try {
                     JSONArray jsonArray = new JSONArray(response);
+                    mComicsDataSource.open();
+                    mComicsDataSource.deleteAllSeries();
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                         mComicsDataSource.insertSeries(new Series(jsonObject));
@@ -53,7 +54,11 @@ public class ComicsController {
                 onSeriesFetched.callback();
             }
         });
-        task.execute(String.format("%s?token=%s", SERIES_URL, Secret.API_TOKEN));
+        if (!Secret.MOCK_ENABLED) {
+            task.execute(String.format("%s?token=%s", SERIES_URL, Secret.API_TOKEN));
+        } else {
+            task.execute(String.format("%s?token=%s", MOCK_SERIES_URL, Secret.MOCK_API_TOKEN));
+        }
     }
 
     public void fetchSeriesComics (final Series series, final OnComicsFetched onComicsFetched) {
@@ -61,11 +66,11 @@ public class ComicsController {
             @Override
             public void callback(String response) {
                 Log.d(LOG_TAG, response);
-                mComicsDataSource.open();
-                mComicsDataSource.deleteAllSeriesComics(series);
                 try {
                     JSONObject jsonSeriesDetail = new JSONObject(response);
                     JSONArray jsonArray = (JSONArray) jsonSeriesDetail.get("comics");
+                    mComicsDataSource.open();
+                    mComicsDataSource.deleteAllSeriesComics(series);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                         mComicsDataSource.insertComic(new Comic(series, jsonObject));
@@ -77,7 +82,11 @@ public class ComicsController {
                 onComicsFetched.callback();
             }
         });
-        task.execute(String.format("%s%s?token=%s", SERIES_URL, series.getId(), Secret.API_TOKEN));
+        if (!Secret.MOCK_ENABLED) {
+            task.execute(String.format("%s%s?token=%s", SERIES_URL, series.getId(), Secret.API_TOKEN));
+        } else {
+            task.execute(String.format("%s%s?token=%s", MOCK_SERIES_URL, series.getId(), Secret.MOCK_API_TOKEN));
+        }
     }
 
     public ArrayList<Series> getSeries () {
