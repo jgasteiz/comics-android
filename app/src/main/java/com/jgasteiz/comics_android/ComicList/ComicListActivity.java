@@ -35,12 +35,6 @@ public class ComicListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series_comics);
 
-        // Register download broadcast receiver for updating the UI.
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.DOWNLOAD_PROGRESS_ACTION);
-        intentFilter.addAction(Constants.COMIC_DOWNLOADED_ACTION);
-        registerReceiver(mComicDownloadReceiver, intentFilter);
-
         // Retrieve the selected series from the intent.
         Intent intent = getIntent();
         mSeries = (Series) intent.getSerializableExtra("series");
@@ -64,8 +58,21 @@ public class ComicListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Register download broadcast receiver for updating the UI.
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.DOWNLOAD_PROGRESS_ACTION);
+        intentFilter.addAction(Constants.COMIC_DOWNLOADED_ACTION);
+        registerReceiver(mComicDownloadReceiver, intentFilter);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+
+        // Unregister the broadcast receiver.
         unregisterReceiver(mComicDownloadReceiver);
     }
 

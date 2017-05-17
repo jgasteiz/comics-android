@@ -211,28 +211,13 @@ public class ComicsController {
     }
 
     /**
-     * Checks if a given comic has been downloaded and return true if it has.
-     * @param comic Comic instance
-     * @return true if the comic is offline, false if not.
-     */
-    public boolean isComicOffline (Comic comic) {
-        File comicDirectory = getComicDirectory(comic);
-        return comicDirectory.exists() && comicDirectory.list().length == comic.getPages().size();
-    }
-
-    /**
      * Delete the downloaded comic pages.
      * @param comic
      */
     public void removeComicDownload (Comic comic) {
-        File comicDirectory = getComicDirectory(comic);
+        File comicDirectory = comic.getComicDirectory(mContext);
         for (File file : comicDirectory.listFiles()) {
             file.delete();
         }
-    }
-
-    public File getComicDirectory (Comic comic) {
-        String comicDirectoryPath = String.format("%s%s%s", mContext.getFilesDir(), File.separator, comic.getId());
-        return new File(comicDirectoryPath);
     }
 }

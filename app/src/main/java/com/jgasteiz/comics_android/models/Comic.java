@@ -1,5 +1,9 @@
 package com.jgasteiz.comics_android.models;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.util.Log;
 import com.jgasteiz.comics_android.helpers.Secret;
 import com.jgasteiz.comics_android.helpers.Utils;
@@ -7,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -77,12 +82,46 @@ public class Comic implements Serializable {
         this.pages = pages;
     }
 
+    // HELPER FUNCTIONS
+
+    /**
+     * Checks if a given comic has been downloaded and return true if it has.
+     * @param context Context instance
+     * @return true if the comic is offline, false if not.
+     */
+    public boolean isComicOffline (Context context) {
+        File comicDirectory = getComicDirectory(context);
+        return comicDirectory.exists() && comicDirectory.list().length == getPages().size();
+    }
+
+    /**
+     * Return the comic directory.
+     * @param context Context instance
+     * @return File instance for the comic directory
+     */
+    public File getComicDirectory (Context context) {
+        String comicDirectoryPath = String.format("%s%s%s", context.getFilesDir(), File.separator, getId());
+        return new File(comicDirectoryPath);
+    }
+
     public String getPage(int pageIndex) {
         if (!Secret.MOCK_ENABLED) {
             return pages.get(pageIndex);
         } else {
             return pages.get(pageIndex).replace("localhost", Secret.MOCK_SERVER_IP_ADDRESS);
         }
+    }
+
+    public Bitmap getOfflinePage (Context context, int pageIndex) {
+        // Return the offline page
+        String[] fileNameParts = pages.get(pageIndex).split("/");
+        String pageFileName = fileNameParts[fileNameParts.length - 1];
+        File pageFile = new File(getComicDirectory(context), pageFileName);
+
+        if(pageFile.exists()){
+            return BitmapFactory.decodeFile(pageFile.getAbsolutePath());
+        }
+        return null;
     }
 
     public String getSerializedPages() {

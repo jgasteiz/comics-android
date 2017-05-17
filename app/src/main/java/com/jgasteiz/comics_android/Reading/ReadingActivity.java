@@ -1,6 +1,7 @@
 package com.jgasteiz.comics_android.Reading;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,10 +84,17 @@ public class ReadingActivity extends Activity {
     private void loadPageWithIndex (int pageIndex) {
         mPageImageView.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-        Picasso
-            .with(this)
-            .load(mComic.getPage(pageIndex))
-            .into(mPageImageView, mPicassoCallback);
+        if (mComic.isComicOffline(this)) {
+            Bitmap pageBitmap = mComic.getOfflinePage(this, pageIndex);
+            mPageImageView.setImageBitmap(pageBitmap);
+            mProgressBar.setVisibility(View.GONE);
+            mPageImageView.setVisibility(View.VISIBLE);
+        } else {
+            Picasso
+                    .with(this)
+                    .load(mComic.getPage(pageIndex))
+                    .into(mPageImageView, mPicassoCallback);
+        }
     }
 
     /**

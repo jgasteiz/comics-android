@@ -40,7 +40,7 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
 
         // Check if a comic is offline or not.
         final ComicsController comicsController = new ComicsController(getContext());
-        if (comicsController.isComicOffline (comic)) {
+        if (comic.isComicOffline (getContext())) {
             setRemoveButton(convertView, comicsController, comic);
         } else {
             setDownloadButton(convertView, comic);
