@@ -6,4 +6,5 @@
     <string name="the_series_year">2003</string>
     <string name="the_comic_title">The comic title</string>
     <string name="download_comic">Download</string>
+    <string name="remove_download">Remove download</string>
 </resources>

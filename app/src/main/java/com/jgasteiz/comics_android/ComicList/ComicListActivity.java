@@ -41,7 +41,7 @@ public class ComicListActivity extends AppCompatActivity {
         intentFilter.addAction(Constants.COMIC_DOWNLOADED_ACTION);
         registerReceiver(mComicDownloadReceiver, intentFilter);
 
-        // Retrieve the post url from the intent
+        // Retrieve the selected series from the intent.
         Intent intent = getIntent();
         mSeries = (Series) intent.getSerializableExtra("series");
 
@@ -113,6 +113,7 @@ public class ComicListActivity extends AppCompatActivity {
                     mToast = Toast.makeText(getApplication(), intent.getStringExtra("message"), Toast.LENGTH_SHORT);
                     mToast.show();
                     Log.d(LOG_TAG, intent.getStringExtra("message"));
+                    populateComicList(mComicsController.getSeriesComics(mSeries));
                     break;
             }
         }

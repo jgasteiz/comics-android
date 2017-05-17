@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import com.jgasteiz.comics_android.R;
+import com.jgasteiz.comics_android.helpers.ComicsController;
 import com.jgasteiz.comics_android.models.Comic;
 
 import java.util.ArrayList;
@@ -31,12 +32,26 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
 
         // Get references to the text views.
         TextView comicTitleView = (TextView) convertView.findViewById(R.id.comic_title);
-        Button downloadComicButton = (Button) convertView.findViewById(R.id.download_comic);
 
         // Set the comic title, author and year.
         if (comic != null) {
             comicTitleView.setText(comic.getTitle());
         }
+
+        // Check if a comic is offline or not.
+        final ComicsController comicsController = new ComicsController(getContext());
+        if (comicsController.isComicOffline (comic)) {
+            setRemoveButton(convertView, comicsController, comic);
+        } else {
+            setDownloadButton(convertView, comic);
+        }
+
+        return convertView;
+    }
+
+    public void setDownloadButton (View convertView, final Comic comic) {
+        Button downloadComicButton = (Button) convertView.findViewById(R.id.download_comic);
+        downloadComicButton.setText(getContext().getString(R.string.download_comic));
 
         // Download the comic when the button is clicked.
         downloadComicButton.setOnClickListener(new View.OnClickListener() {
@@ -50,9 +65,19 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
                 getContext().startService(downloadIntent);
             }
         });
+    }
 
-        //
+    public void setRemoveButton (final View convertView, final ComicsController comicsController, final Comic comic) {
+        Button downloadComicButton = (Button) convertView.findViewById(R.id.download_comic);
+        downloadComicButton.setText(getContext().getString(R.string.remove_download));
 
-        return convertView;
+        // Download the comic when the button is clicked.
+        downloadComicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comicsController.removeComicDownload(comic);
+                setDownloadButton(convertView, comic);
+            }
+        });
     }
 }
