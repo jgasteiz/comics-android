@@ -3,6 +3,7 @@ package com.jgasteiz.comics_android.helpers;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import com.jgasteiz.comics_android.ComicList.DownloadComicAsyncTask;
 import com.jgasteiz.comics_android.db.ComicsDataSource;
 import com.jgasteiz.comics_android.db.ComicsHelper;
 import com.jgasteiz.comics_android.interfaces.*;
@@ -154,18 +155,4 @@ public class ComicsController {
         return comicList;
     }
 
-    /**
-     * Download the pages of the given comic in the internal storage.
-     * @param comic Comic instance
-     * @param onPageDownloaded callback for downloading pages.
-     * @param onComicDownloaded callback for downloading the entire comic.
-     */
-    public void downloadComic (Comic comic, final OnPageDownloaded onPageDownloaded, final OnComicDownloaded onComicDownloaded) {
-        final DownloadComicImagesAsyncTask task = new DownloadComicImagesAsyncTask(
-            mContext,
-            comic,
-            onPageDownloaded,
-            onComicDownloaded);
-        task.execute();
-    }
 }

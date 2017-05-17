@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.models.Comic;
-import com.jgasteiz.comics_android.services.ComicDownloadService;
 
 import java.util.ArrayList;
 
@@ -39,6 +38,7 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
             comicTitleView.setText(comic.getTitle());
         }
 
+        // Download the comic when the button is clicked.
         downloadComicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +50,8 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
                 getContext().startService(downloadIntent);
             }
         });
+
+        //
 
         return convertView;
     }

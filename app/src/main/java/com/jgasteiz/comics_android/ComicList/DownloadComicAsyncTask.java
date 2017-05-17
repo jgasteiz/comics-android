@@ -1,4 +1,4 @@
-package com.jgasteiz.comics_android.helpers;
+package com.jgasteiz.comics_android.ComicList;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,16 +13,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class DownloadComicImagesAsyncTask extends AsyncTask<Void, Void, Void> {
+public class DownloadComicAsyncTask extends AsyncTask<Void, Void, Void> {
 
-    private static final String LOG_TAG = DownloadComicImagesAsyncTask.class.getSimpleName();
+    private static final String LOG_TAG = DownloadComicAsyncTask.class.getSimpleName();
 
     Context mContext;
     Comic mComic;
     OnPageDownloaded mOnPageDownloaded;
     OnComicDownloaded mOnComicDownloaded;
 
-    public DownloadComicImagesAsyncTask(
+    public DownloadComicAsyncTask(
             Context context,
             Comic comic,
             OnPageDownloaded onPageDownloaded,
@@ -44,8 +44,6 @@ public class DownloadComicImagesAsyncTask extends AsyncTask<Void, Void, Void> {
         Log.d(LOG_TAG, String.format("Comic directory %s created", comicDirectory.getAbsolutePath()));
 
         // Download all the pages.
-        for (String page : mComic.getPages()) {
-        }
         for (int i = 0; i < mComic.getPages().size(); i++) {
             String page = mComic.getPage(i);
             downloadImage(page, comicDirectoryPath);
