@@ -2,18 +2,12 @@ package com.jgasteiz.comics_android.helpers;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.util.Log;
 import com.jgasteiz.comics_android.db.ComicsDataSource;
 import com.jgasteiz.comics_android.db.ComicsHelper;
-import com.jgasteiz.comics_android.interfaces.OnComicsFetched;
-import com.jgasteiz.comics_android.interfaces.OnResponseFetched;
-import com.jgasteiz.comics_android.interfaces.OnSeriesFetched;
+import com.jgasteiz.comics_android.interfaces.*;
 import com.jgasteiz.comics_android.models.Comic;
 import com.jgasteiz.comics_android.models.Series;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -158,5 +152,20 @@ public class ComicsController {
         mComicsDataSource.close();
 
         return comicList;
+    }
+
+    /**
+     * Download the pages of the given comic in the internal storage.
+     * @param comic Comic instance
+     * @param onPageDownloaded callback for downloading pages.
+     * @param onComicDownloaded callback for downloading the entire comic.
+     */
+    public void downloadComic (Comic comic, final OnPageDownloaded onPageDownloaded, final OnComicDownloaded onComicDownloaded) {
+        final DownloadComicImagesAsyncTask task = new DownloadComicImagesAsyncTask(
+            mContext,
+            comic,
+            onPageDownloaded,
+            onComicDownloaded);
+        task.execute();
     }
 }

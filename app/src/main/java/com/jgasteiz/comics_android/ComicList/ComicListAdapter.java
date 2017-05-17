@@ -1,14 +1,16 @@
 package com.jgasteiz.comics_android.ComicList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.models.Comic;
-import com.jgasteiz.comics_android.models.Series;
+import com.jgasteiz.comics_android.services.ComicDownloadService;
 
 import java.util.ArrayList;
 
@@ -30,11 +32,24 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
 
         // Get references to the text views.
         TextView comicTitleView = (TextView) convertView.findViewById(R.id.comic_title);
+        Button downloadComicButton = (Button) convertView.findViewById(R.id.download_comic);
 
         // Set the comic title, author and year.
         if (comic != null) {
             comicTitleView.setText(comic.getTitle());
         }
+
+        downloadComicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assert comic != null;
+
+                // Start the comic download service.
+                Intent downloadIntent = new Intent(getContext(), ComicDownloadService.class);
+                downloadIntent.putExtra("comic", comic);
+                getContext().startService(downloadIntent);
+            }
+        });
 
         return convertView;
     }

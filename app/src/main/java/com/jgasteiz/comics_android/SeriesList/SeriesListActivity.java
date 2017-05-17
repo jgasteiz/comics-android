@@ -1,5 +1,7 @@
 package com.jgasteiz.comics_android.SeriesList;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import com.jgasteiz.comics_android.ComicList.ComicListActivity;
 import com.jgasteiz.comics_android.helpers.Utils;
 import com.jgasteiz.comics_android.interfaces.OnSeriesFetched;
 import com.jgasteiz.comics_android.models.Series;
+import com.jgasteiz.comics_android.services.ComicDownloadService;
 
 import java.util.ArrayList;
 

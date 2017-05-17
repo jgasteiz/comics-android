@@ -12,6 +12,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <service android:name=".services.ComicDownloadService" />
+
         <activity
             android:name=".SeriesList.SeriesListActivity"
             android:launchMode="singleTop"
