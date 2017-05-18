@@ -79,10 +79,6 @@ public class ComicListActivity extends AppCompatActivity {
     }
 
     private void populateComicList (final ArrayList<Comic> comicList) {
-        ArrayList<String> comicTitles = new ArrayList<>();
-        for (Comic comic : comicList) {
-            comicTitles.add(comic.getTitle());
-        }
         ComicListAdapter comicListAdapter = new ComicListAdapter(this, comicList);
         ListView listView = (ListView) findViewById(R.id.comic_list);
         listView.setAdapter(comicListAdapter);

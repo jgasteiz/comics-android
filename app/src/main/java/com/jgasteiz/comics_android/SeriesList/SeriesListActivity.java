@@ -41,10 +41,6 @@ public class SeriesListActivity extends AppCompatActivity {
     }
 
     private void populateSeriesList (final ArrayList<Series> seriesList) {
-        ArrayList<String> seriesTitles = new ArrayList<>();
-        for (Series series : seriesList) {
-            seriesTitles.add(series.getTitle());
-        }
         SeriesListAdapter seriesListAdapter = new SeriesListAdapter(this, seriesList);
         ListView listView = (ListView) findViewById(R.id.series_list);
         listView.setAdapter(seriesListAdapter);
