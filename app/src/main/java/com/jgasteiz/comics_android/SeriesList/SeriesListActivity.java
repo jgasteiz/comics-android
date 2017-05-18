@@ -26,6 +26,10 @@ public class SeriesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_series);
 
         mComicsController = new ComicsController(this);
+        populateSeriesList(mComicsController.getSeries());
+
+        // If there's internet, load the series from the API and reload the
+        // comic list.
         if (Utils.isNetworkAvailable(this)) {
             mComicsController.fetchSeries(new OnSeriesFetched() {
                 @Override
@@ -33,14 +37,11 @@ public class SeriesListActivity extends AppCompatActivity {
                     populateSeriesList(mComicsController.getSeries());
                 }
             });
-        } else {
-            populateSeriesList(mComicsController.getSeries());
-            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void populateSeriesList (final ArrayList<Series> seriesList) {
-        ArrayList<String> seriesTitles = new ArrayList<String>();
+        ArrayList<String> seriesTitles = new ArrayList<>();
         for (Series series : seriesList) {
             seriesTitles.add(series.getTitle());
         }

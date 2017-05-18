@@ -45,6 +45,10 @@ public class ComicListActivity extends AppCompatActivity {
         }
 
         mComicsController = new ComicsController(this);
+        populateComicList(mComicsController.getSeriesComics(mSeries));
+
+        // If there's internet, load the comics from the API and reload the
+        // comic list.
         if (Utils.isNetworkAvailable(this)) {
             mComicsController.fetchSeriesComics(mSeries, new OnComicsFetched() {
             @Override
@@ -52,8 +56,6 @@ public class ComicListActivity extends AppCompatActivity {
                 populateComicList(mComicsController.getSeriesComics(mSeries));
             }
         });
-        } else {
-            populateComicList(mComicsController.getSeriesComics(mSeries));
         }
     }
 
@@ -77,7 +79,7 @@ public class ComicListActivity extends AppCompatActivity {
     }
 
     private void populateComicList (final ArrayList<Comic> comicList) {
-        ArrayList<String> comicTitles = new ArrayList<String>();
+        ArrayList<String> comicTitles = new ArrayList<>();
         for (Comic comic : comicList) {
             comicTitles.add(comic.getTitle());
         }
