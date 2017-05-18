@@ -18,9 +18,18 @@
     <Button
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:id="@+id/download_comic"
+        android:id="@+id/action_button"
         android:text="@string/download_comic"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"/>
+
+    <TextView
+        android:id="@+id/progress_text"
+        android:text="@string/progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:visibility="gone"
+    />
 
 </LinearLayout>

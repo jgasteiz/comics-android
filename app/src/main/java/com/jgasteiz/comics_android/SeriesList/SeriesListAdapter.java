@@ -1,6 +1,7 @@
 package com.jgasteiz.comics_android.SeriesList;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,9 @@ public class SeriesListAdapter extends ArrayAdapter<Series> {
         super(context, 0, seriesList);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
         final Series series = getItem(position);
 

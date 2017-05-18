@@ -1,27 +1,34 @@
 package com.jgasteiz.comics_android.ComicList;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.helpers.ComicsController;
+import com.jgasteiz.comics_android.interfaces.OnComicDownloaded;
+import com.jgasteiz.comics_android.interfaces.OnPageDownloaded;
 import com.jgasteiz.comics_android.models.Comic;
 
 import java.util.ArrayList;
 
 public class ComicListAdapter extends ArrayAdapter<Comic> {
 
-    public ComicListAdapter(Context context, ArrayList<Comic> comicList) {
+    private static final String LOG_TAG = ComicListAdapter.class.getSimpleName();
+
+    ComicListAdapter(Context context, ArrayList<Comic> comicList) {
         super(context, 0, comicList);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
         final Comic comic = getItem(position);
 
@@ -39,9 +46,9 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
         }
 
         // Check if a comic is offline or not.
-        final ComicsController comicsController = new ComicsController(getContext());
-        if (comic.isComicOffline (getContext())) {
-            setRemoveButton(convertView, comicsController, comic);
+        assert comic != null;
+        if (comic.isComicOffline(getContext())) {
+            setRemoveButton(convertView, comic);
         } else {
             setDownloadButton(convertView, comic);
         }
@@ -49,8 +56,13 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
         return convertView;
     }
 
-    public void setDownloadButton (View convertView, final Comic comic) {
-        Button downloadComicButton = (Button) convertView.findViewById(R.id.download_comic);
+    /**
+     * Change the action button to `download` a comic.
+     * @param convertView View instance
+     * @param comic Comic instance
+     */
+    private void setDownloadButton (final View convertView, final Comic comic) {
+        Button downloadComicButton = (Button) convertView.findViewById(R.id.action_button);
         downloadComicButton.setText(getContext().getString(R.string.download_comic));
 
         // Download the comic when the button is clicked.
@@ -59,22 +71,63 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
             public void onClick(View v) {
                 assert comic != null;
 
-                // Start the comic download service.
-                Intent downloadIntent = new Intent(getContext(), ComicDownloadService.class);
-                downloadIntent.putExtra("comic", comic);
-                getContext().startService(downloadIntent);
-            }
-        });
+                final Button downloadComicButton = (Button) convertView.findViewById(R.id.action_button);
+                final TextView progressTextView = (TextView) convertView.findViewById(R.id.progress_text);
+
+                downloadComicButton.setVisibility(View.GONE);
+                progressTextView.setVisibility(View.VISIBLE);
+                progressTextView.setText(R.string.downloading_comic);
+
+                DownloadComicAsyncTask task = new DownloadComicAsyncTask(
+                    getContext(),
+                    comic,
+                    new OnPageDownloaded() {
+                        @Override
+                        public void callback(final String message) {
+                            ((ComicListActivity) getContext()).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressTextView.setText(message);
+                                    Log.d(LOG_TAG, message);
+                                }
+                            });
+                        }
+                    }, new OnComicDownloaded() {
+                        @Override
+                        public void callback() {
+                            ((ComicListActivity) getContext()).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "Comic downloaded", Toast.LENGTH_SHORT).show();
+                                    Log.d(LOG_TAG, "Comic downloaded");
+
+                                    setRemoveButton(convertView, comic);
+
+                                    progressTextView.setVisibility(View.GONE);
+                                    downloadComicButton.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    });
+                    task.execute();
+                }
+            });
     }
 
-    public void setRemoveButton (final View convertView, final ComicsController comicsController, final Comic comic) {
-        Button downloadComicButton = (Button) convertView.findViewById(R.id.download_comic);
+    /**
+     * Change the action button to `remove` a downloaded comic.
+     * @param convertView View instance
+     * @param comic Comic instance
+     */
+    private void setRemoveButton (final View convertView, final Comic comic) {
+        Button downloadComicButton = (Button) convertView.findViewById(R.id.action_button);
         downloadComicButton.setText(getContext().getString(R.string.remove_download));
 
-        // Download the comic when the button is clicked.
+        // Remove the downloaded comic when the button is clicked.
         downloadComicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ComicsController comicsController = new ComicsController(getContext());
                 comicsController.removeComicDownload(comic);
                 setDownloadButton(convertView, comic);
             }

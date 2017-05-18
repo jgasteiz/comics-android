@@ -14,11 +14,9 @@ public class ComicsDataSource {
 
     private SQLiteDatabase mDatabase;       // The actual DB!
     private ComicsHelper mComicsHelper; // Helper class for creating and opening the DB
-    private Context mContext;
 
     public ComicsDataSource(Context context) {
-        this.mContext = context;
-        mComicsHelper = new ComicsHelper(mContext);
+        mComicsHelper = new ComicsHelper(context);
     }
 
     /*

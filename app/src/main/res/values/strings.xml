@@ -7,4 +7,6 @@
     <string name="the_comic_title">The comic title</string>
     <string name="download_comic">Download</string>
     <string name="remove_download">Remove download</string>
+    <string name="progress_text">Dowloading: 10%</string>
+    <string name="downloading_comic">Downloading comic</string>
 </resources>

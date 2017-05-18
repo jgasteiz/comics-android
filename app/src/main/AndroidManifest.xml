@@ -13,8 +13,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <service android:name=".ComicList.ComicDownloadService" />
-
         <activity
             android:name=".SeriesList.SeriesListActivity"
             android:launchMode="singleTop"
