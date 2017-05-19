@@ -1,12 +1,12 @@
 package com.jgasteiz.comics_android.ComicList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.jgasteiz.comics_android.helpers.ComicsController;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.Reading.ReadingActivity;
 import com.jgasteiz.comics_android.helpers.Utils;
@@ -21,7 +21,6 @@ public class ComicListActivity extends AppCompatActivity {
     private static final String LOG_TAG = ComicListActivity.class.getSimpleName();
 
     private Series mSeries;
-    private ComicsController mComicsController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +36,18 @@ public class ComicListActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(mSeries.getTitle());
         }
 
-        mComicsController = new ComicsController(this);
-        populateComicList(mComicsController.getSeriesComics(mSeries));
+        populateComicList(Utils.getSeriesComics(this, mSeries));
 
         // If there's internet, load the comics from the API and reload the
         // comic list.
         if (Utils.isNetworkAvailable(this)) {
-            mComicsController.fetchSeriesComics(mSeries, new OnComicsFetched() {
-            @Override
-            public void callback() {
-                populateComicList(mComicsController.getSeriesComics(mSeries));
-            }
-        });
+            final Context that = this;
+            Utils.fetchSeriesComics(this, mSeries, new OnComicsFetched() {
+                @Override
+                public void callback() {
+                    populateComicList(Utils.getSeriesComics(that, mSeries));
+                }
+            });
         }
     }
 

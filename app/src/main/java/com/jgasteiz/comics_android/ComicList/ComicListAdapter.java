@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jgasteiz.comics_android.R;
-import com.jgasteiz.comics_android.helpers.ComicsController;
+import com.jgasteiz.comics_android.helpers.Utils;
 import com.jgasteiz.comics_android.interfaces.OnComicDownloaded;
 import com.jgasteiz.comics_android.interfaces.OnPageDownloaded;
 import com.jgasteiz.comics_android.models.Comic;
@@ -127,8 +127,7 @@ public class ComicListAdapter extends ArrayAdapter<Comic> {
         downloadComicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComicsController comicsController = new ComicsController(getContext());
-                comicsController.removeComicDownload(comic);
+                Utils.removeComicDownload(getContext(), comic);
                 setDownloadButton(convertView, comic);
             }
         });

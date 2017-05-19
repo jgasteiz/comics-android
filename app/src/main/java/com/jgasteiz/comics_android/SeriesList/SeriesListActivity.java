@@ -1,13 +1,12 @@
 package com.jgasteiz.comics_android.SeriesList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-import com.jgasteiz.comics_android.helpers.ComicsController;
 import com.jgasteiz.comics_android.R;
 import com.jgasteiz.comics_android.ComicList.ComicListActivity;
 import com.jgasteiz.comics_android.helpers.Utils;
@@ -18,23 +17,21 @@ import java.util.ArrayList;
 
 public class SeriesListActivity extends AppCompatActivity {
 
-    private ComicsController mComicsController;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series);
 
-        mComicsController = new ComicsController(this);
-        populateSeriesList(mComicsController.getSeries());
+        populateSeriesList(Utils.getSeries(this));
 
         // If there's internet, load the series from the API and reload the
         // comic list.
         if (Utils.isNetworkAvailable(this)) {
-            mComicsController.fetchSeries(new OnSeriesFetched() {
+            final Context that = this;
+            Utils.fetchSeries(this, new OnSeriesFetched() {
                 @Override
                 public void callback() {
-                    populateSeriesList(mComicsController.getSeries());
+                    populateSeriesList(Utils.getSeries(that));
                 }
             });
         }
