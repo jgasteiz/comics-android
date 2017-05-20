@@ -7,8 +7,9 @@
     android:padding="0dp"
     tools:context="com.jgasteiz.comics_android.ComicList.ComicListActivity">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/comic_list" />
+    <FrameLayout
+            android:id="@+id/comic_list_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    />
 </RelativeLayout>

@@ -1,15 +1,14 @@
-package com.jgasteiz.comics_android.SeriesList;
+package com.jgasteiz.comics_android.SeriesList
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import com.jgasteiz.comics_android.R;
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import com.jgasteiz.comics_android.R
 
-public class SeriesListActivity extends AppCompatActivity {
+class SeriesListActivity : AppCompatActivity() {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_series);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.series_list_activity)
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -19,21 +18,21 @@ public class SeriesListActivity extends AppCompatActivity {
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
-                return;
+                return
             }
 
             // Create a new Fragment to be placed in the activity layout
-            SeriesListFragment firstFragment = new SeriesListFragment();
+            val firstFragment = SeriesListFragment()
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
+            firstFragment.arguments = intent.extras
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager()
+            supportFragmentManager
                     .beginTransaction()
                     .add(R.id.series_list_fragment_container, firstFragment)
-                    .commit();
+                    .commit()
         }
     }
 }

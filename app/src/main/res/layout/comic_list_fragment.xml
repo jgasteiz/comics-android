@@ -7,7 +7,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/series_list"
+        android:id="@+id/comic_list"
     />
 
 </LinearLayout>
