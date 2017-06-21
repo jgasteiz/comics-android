@@ -72,6 +72,13 @@ class Comic : Serializable {
         return File(comicDirectoryPath)
     }
 
+    fun getNumPages(): Int {
+        if (pages != null) {
+            return pages!!.size
+        }
+        return 1
+    }
+
     fun getPage(pageIndex: Int): String {
         if (!Secret.MOCK_ENABLED) {
             return pages!![pageIndex]

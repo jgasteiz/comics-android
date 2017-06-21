@@ -4,11 +4,13 @@ package com.jgasteiz.comics_android.helpers
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import com.jgasteiz.comics_android.ComicList.ComicListActivity
+import com.jgasteiz.comics_android.ComicList.DownloadComicAsyncTask
 import com.jgasteiz.comics_android.db.ComicsDataSource
 import com.jgasteiz.comics_android.db.ComicsHelper
-import com.jgasteiz.comics_android.interfaces.OnComicsFetched
-import com.jgasteiz.comics_android.interfaces.OnResponseFetched
-import com.jgasteiz.comics_android.interfaces.OnSeriesFetched
+import com.jgasteiz.comics_android.interfaces.*
 import com.jgasteiz.comics_android.models.Comic
 import com.jgasteiz.comics_android.models.Series
 import org.json.JSONArray
@@ -26,6 +28,8 @@ object Utils {
 
     private val SERIES_URL = "http://comics.jgasteiz.com/api/series/"
     private val MOCK_SERIES_URL = String.format("http://%s:8000/api/series/", Secret.MOCK_SERVER_IP_ADDRESS)
+
+    var downloads: HashMap<Int, Int> = HashMap()
 
     fun convertArrayToString(array: ArrayList<String>): String {
         val str = StringBuilder()
@@ -184,6 +188,30 @@ object Utils {
         comicsDataSource.close()
 
         return comicList
+    }
+
+    /**
+     * Download the given comic.
+     */
+    fun downloadComic (context: Context, comic: Comic) {
+        downloads[comic.id] = 0
+
+        val task = DownloadComicAsyncTask(
+                context,
+                comic,
+                object : OnPageDownloaded {
+                    override fun callback(percentage: Int) {
+                        downloads[comic.id] = percentage
+                    }
+                }, object : OnComicDownloaded {
+                    override fun callback() {
+                        downloads[comic.id] = 100
+                    }
+                }
+        )
+        task.execute()
+
+
     }
 
     /**

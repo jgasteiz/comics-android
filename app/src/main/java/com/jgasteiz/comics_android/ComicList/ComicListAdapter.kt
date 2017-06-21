@@ -1,6 +1,7 @@
 package com.jgasteiz.comics_android.ComicList
 
 import android.content.Context
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,7 @@ import com.jgasteiz.comics_android.helpers.Utils
 import com.jgasteiz.comics_android.interfaces.OnComicDownloaded
 import com.jgasteiz.comics_android.interfaces.OnPageDownloaded
 import com.jgasteiz.comics_android.models.Comic
-
-import java.util.ArrayList
+import java.util.*
 
 class ComicListAdapter internal constructor(context: Context, comicList: ArrayList<Comic>?) : ArrayAdapter<Comic>(context, 0, comicList) {
 
@@ -35,9 +35,7 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
         val comicTitleView = convertView!!.findViewById(R.id.comic_title) as TextView
 
         // Set the comic title, author and year.
-        if (comic != null) {
-            comicTitleView.text = comic.title
-        }
+        comicTitleView.text = comic.title
 
         // Check if a comic is offline or not.
         if (comic.isComicOffline(context)) {
@@ -57,12 +55,14 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
      */
     private fun setDownloadButton(convertView: View, comic: Comic) {
         val downloadComicButton = convertView.findViewById(R.id.action_button) as Button
+        val progressTextView = convertView.findViewById(R.id.progress_text) as TextView
+
         downloadComicButton.text = context.getString(R.string.download_comic)
+
+        checkActiveDownload(comic, convertView, progressTextView, downloadComicButton)
 
         // Download the comic when the button is clicked.
         downloadComicButton.setOnClickListener {
-            assert(comic != null)
-
             val downloadComicButton = convertView.findViewById(R.id.action_button) as Button
             val progressTextView = convertView.findViewById(R.id.progress_text) as TextView
 
@@ -70,32 +70,38 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
             progressTextView.visibility = View.VISIBLE
             progressTextView.setText(R.string.downloading_comic)
 
-            val task = DownloadComicAsyncTask(
-                    context,
-                    comic,
-                    object : OnPageDownloaded {
-                        override fun callback(message: String) {
-                            (context as ComicListActivity).runOnUiThread {
-                                progressTextView.text = message
-                                Log.d(LOG_TAG, message)
-                            }
-                        }
-                    }, object : OnComicDownloaded {
-                        override fun callback() {
-                            (context as ComicListActivity).runOnUiThread {
-                                Toast.makeText(context, "Comic downloaded", Toast.LENGTH_SHORT).show()
-                                Log.d(LOG_TAG, "Comic downloaded")
+            Utils.downloadComic(context, comic)
 
-                                setRemoveButton(convertView, comic)
-
-                                progressTextView.visibility = View.GONE
-                                downloadComicButton.visibility = View.VISIBLE
-                            }
-                        }
-                    }
-            )
-            task.execute()
+            // Check the download status.
+            checkActiveDownload(comic, convertView, progressTextView, downloadComicButton)
         }
+    }
+
+    private fun checkActiveDownload (comic: Comic, convertView: View, progressTextView: TextView, downloadComicButton: Button) {
+        if (Utils.downloads[comic.id] == null) {
+            return
+        }
+
+        val timer = Timer("checkDownloadProgress")
+
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                val progress = Utils.downloads[comic.id]
+                Log.d(LOG_TAG, Utils.downloads[comic.id].toString())
+                if (progress != 100) {
+                    (context as ComicListActivity).runOnUiThread {
+                        progressTextView.setText("$progress%")
+                    }
+                } else {
+                    Log.d(LOG_TAG, "Comic downloaded")
+                    (context as ComicListActivity).runOnUiThread {
+                        setRemoveButton(convertView, comic)
+                        progressTextView.visibility = View.GONE
+                        downloadComicButton.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }, 0, 500)
     }
 
     /**

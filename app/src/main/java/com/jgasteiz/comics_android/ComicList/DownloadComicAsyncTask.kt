@@ -8,7 +8,6 @@ import com.jgasteiz.comics_android.interfaces.OnPageDownloaded
 import com.jgasteiz.comics_android.models.Comic
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 
 import java.io.File
 import java.io.FileOutputStream
@@ -20,7 +19,7 @@ class DownloadComicAsyncTask internal constructor(
         private val mComic: Comic,
         private val mOnPageDownloaded: OnPageDownloaded,
         private val mOnComicDownloaded: OnComicDownloaded
-) : AsyncTask<Void, String, Void>() {
+) : AsyncTask<Void, Int, Void>() {
 
     private val LOG_TAG = DownloadComicAsyncTask::class.java.simpleName
 
@@ -35,8 +34,9 @@ class DownloadComicAsyncTask internal constructor(
         return null
     }
 
-    override fun onProgressUpdate(vararg values: String) {
-        mOnPageDownloaded.callback(values[0])
+
+    override fun onProgressUpdate(vararg values: Int?) {
+        mOnPageDownloaded.callback(values[0]!!)
     }
 
     override fun onPostExecute(aVoid: Void) {
@@ -57,13 +57,11 @@ class DownloadComicAsyncTask internal constructor(
         }
 
         // Download all the pages.
-        for (i in 0..mComic.pages!!.size - 1) {
-            val page = mComic.getPage(i)
-            downloadPage(page, comicDirectoryPath)
+        for (i in 0..mComic.getNumPages() - 1) {
+            downloadPage(mComic.getPage(i), comicDirectoryPath)
 
             // Update the progress.
-            val progressMessage = String.format("Downloading at %s percent", i * 100 / mComic.pages!!.size)
-            publishProgress(progressMessage)
+            publishProgress(i * 100 / mComic.getNumPages())
         }
     }
 
