@@ -2,9 +2,7 @@ package com.jgasteiz.comics_android.helpers
 
 
 import android.content.Context
-import android.database.Cursor
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.Log
 import com.jgasteiz.comics_android.db.ComicsDataSource
 import com.jgasteiz.comics_android.db.ComicsHelper
@@ -17,7 +15,6 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-import java.io.File
 import java.util.ArrayList
 import java.util.Collections
 
@@ -94,7 +91,10 @@ object Utils {
      * *
      * @param onComicsFetched callback
      */
-    fun fetchSeriesComics(context: Context, series: Series, onComicsFetched: OnComicsFetched) {
+    fun fetchSeriesComics(context: Context, series: Series?, onComicsFetched: OnComicsFetched) {
+        if (series == null) {
+            return
+        }
         val comicsDataSource = ComicsDataSource(context)
 
         val task = GetStringResponseAsyncTask(object : OnResponseFetched {
@@ -159,9 +159,12 @@ object Utils {
      * *
      * @return array list of Comic instances
      */
-    fun getSeriesComics(context: Context, series: Series): ArrayList<Comic> {
+    fun getSeriesComics(context: Context, series: Series?): ArrayList<Comic> {
         val comicsDataSource = ComicsDataSource(context)
         val comicList = ArrayList<Comic>()
+        if (series == null) {
+            return comicList
+        }
 
         comicsDataSource.open()
         val cursor = comicsDataSource.selectSeriesComics(series)

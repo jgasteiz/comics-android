@@ -18,9 +18,7 @@ class ComicListActivity : AppCompatActivity() {
         mSeries = intent.getSerializableExtra("series") as Series
 
         // Set title on the toolbar
-        if (supportActionBar != null) {
-            supportActionBar!!.title = mSeries!!.title
-        }
+        supportActionBar?.title = mSeries?.title
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout

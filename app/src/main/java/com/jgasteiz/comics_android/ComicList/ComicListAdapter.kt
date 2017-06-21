@@ -17,7 +17,7 @@ import com.jgasteiz.comics_android.models.Comic
 
 import java.util.ArrayList
 
-class ComicListAdapter internal constructor(context: Context, comicList: ArrayList<Comic>) : ArrayAdapter<Comic>(context, 0, comicList) {
+class ComicListAdapter internal constructor(context: Context, comicList: ArrayList<Comic>?) : ArrayAdapter<Comic>(context, 0, comicList) {
 
     private val LOG_TAG = ComicListAdapter::class.java.simpleName
 
@@ -81,18 +81,19 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
                             }
                         }
                     }, object : OnComicDownloaded {
-                override fun callback() {
-                    (context as ComicListActivity).runOnUiThread {
-                        Toast.makeText(context, "Comic downloaded", Toast.LENGTH_SHORT).show()
-                        Log.d(LOG_TAG, "Comic downloaded")
+                        override fun callback() {
+                            (context as ComicListActivity).runOnUiThread {
+                                Toast.makeText(context, "Comic downloaded", Toast.LENGTH_SHORT).show()
+                                Log.d(LOG_TAG, "Comic downloaded")
 
-                        setRemoveButton(convertView, comic)
+                                setRemoveButton(convertView, comic)
 
-                        progressTextView.visibility = View.GONE
-                        downloadComicButton.visibility = View.VISIBLE
+                                progressTextView.visibility = View.GONE
+                                downloadComicButton.visibility = View.VISIBLE
+                            }
+                        }
                     }
-                }
-            })
+            )
             task.execute()
         }
     }
