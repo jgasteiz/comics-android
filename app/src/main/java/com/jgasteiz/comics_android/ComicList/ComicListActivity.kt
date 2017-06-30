@@ -3,11 +3,13 @@ package com.jgasteiz.comics_android.ComicList
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.jgasteiz.comics_android.R
+import com.jgasteiz.comics_android.interfaces.TimersDownloadInterface
 import com.jgasteiz.comics_android.models.Series
+import java.util.*
 
-class ComicListActivity : AppCompatActivity() {
-
+class ComicListActivity : AppCompatActivity(), TimersDownloadInterface {
     private var mSeries: Series? = null
+    private var mTimerList = ArrayList<Timer>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,5 +47,21 @@ class ComicListActivity : AppCompatActivity() {
                     .commit()
         }
     }
-//    }
+
+    override fun onDestroy() {
+        cancelAllTimers()
+        super.onDestroy()
+    }
+
+    override fun getNewDownloadProgressTimer(id: Int): Timer {
+        val timer = Timer("checkDownloadProgress-$id")
+        mTimerList.add(timer)
+        return timer
+    }
+
+    override fun cancelAllTimers() {
+        for (timer in mTimerList) {
+            timer.cancel()
+        }
+    }
 }

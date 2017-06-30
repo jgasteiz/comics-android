@@ -21,6 +21,9 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
 
     private val LOG_TAG = ComicListAdapter::class.java.simpleName
 
+    // We need a reference to the parent activity.
+    private val mComicListActivity: ComicListActivity = context as ComicListActivity
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         // Get the data item for this position
@@ -81,7 +84,7 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
             return
         }
 
-        val timer = Timer("checkDownloadProgress")
+        val timer = mComicListActivity.getNewDownloadProgressTimer(comic.id)
 
         timer.schedule(object : TimerTask() {
             override fun run() {
@@ -99,6 +102,7 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
                         setRemoveButton(convertView, comic)
                         progressTextView.visibility = View.GONE
                         downloadComicButton.visibility = View.VISIBLE
+                        timer.cancel()
                     }
                 }
             }
