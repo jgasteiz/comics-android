@@ -39,7 +39,7 @@ class DownloadComicAsyncTask internal constructor(
         mOnPageDownloaded.callback(values[0]!!)
     }
 
-    override fun onPostExecute(aVoid: Void) {
+    override fun onPostExecute(aVoid: Void?) {
         mOnComicDownloaded.callback()
     }
 
