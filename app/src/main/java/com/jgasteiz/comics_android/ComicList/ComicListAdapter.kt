@@ -63,10 +63,9 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
 
         // Download the comic when the button is clicked.
         downloadComicButton.setOnClickListener {
-            val downloadComicButton = convertView.findViewById(R.id.action_button) as Button
             val progressTextView = convertView.findViewById(R.id.progress_text) as TextView
 
-            downloadComicButton.visibility = View.GONE
+            convertView.findViewById(R.id.action_button).visibility = View.GONE
             progressTextView.visibility = View.VISIBLE
             progressTextView.setText(R.string.downloading_comic)
 
@@ -90,6 +89,8 @@ class ComicListAdapter internal constructor(context: Context, comicList: ArrayLi
                 Log.d(LOG_TAG, Utils.downloads[comic.id].toString())
                 if (progress != 100) {
                     (context as ComicListActivity).runOnUiThread {
+                        downloadComicButton.visibility = View.GONE
+                        progressTextView.visibility = View.VISIBLE
                         progressTextView.setText("$progress%")
                     }
                 } else {
